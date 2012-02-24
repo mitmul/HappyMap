@@ -1,21 +1,17 @@
 #ifndef DEPTH_H
 #define DEPTH_H
 
-// std
 #include <iostream>
 #include <string>
 #include <stdexcept>
-
-// boost
 #include <boost/format.hpp>
-
-// OpenNI + NITE
 #include <XnCppWrapper.h>
-#include <XnVNite.h>
+#include <opencv.hpp>
 
 using namespace std;
 using namespace boost;
 using namespace xn;
+using namespace cv;
 
 class KinectControl
 {
@@ -24,22 +20,42 @@ public:
 
     void Init();
 
+    Mat getDepthImage();
+    XnPoint3D getHandPos();
+
+    XnDepthPixel* getDepth();
+    std::vector<std::vector<XnPoint3D> > getSkeleton();
+
     // コールバック関数
     XnCallbackHandle user_callbacks;
     void NewUser(UserGenerator& generator, XnUserID nId);
     void LostUser(UserGenerator& generator, XnUserID nId);
 
-    XnDepthPixel* getDepth();
-    std::vector<std::vector<XnPoint3D> > getSkeleton();
+    XnCallbackHandle start_callback, end_callback, pose_callback;
+    void CalibrationStart(SkeletonCapability& skeleton, XnUserID user);
+    void CalibrationEnd(SkeletonCapability& capability, XnUserID nId, XnCalibrationStatus eStatus);
+    void PoseDetected(PoseDetectionCapability& pose, const XnChar* strPose, XnUserID user);
+
+    XnCallbackHandle hand_callback;
+    void HandCreate(HandsGenerator& generator, XnUserID nId, const XnPoint3D* pPosition, XnFloat fTime);
+    void HandUpdate(HandsGenerator& generator, XnUserID nId, const XnPoint3D* pPosition, XnFloat fTime);
+    void HandDestroy(HandsGenerator& generator, XnUserID nId, XnFloat fTime);
+
+    void GestureRecognized(GestureGenerator& generator, const XnChar* strGesture, const XnPoint3D* pIDPosition, const XnPoint3D* pEndPosition);
+    void GestureProcess(GestureGenerator& generator, const XnChar* strGesture, const XnPoint3D* pPosition, XnFloat fProgress);
 
 private:
     Context context;
-    DepthGenerator depth_generator;
     XnMapOutputMode map_mode;
+    DepthGenerator depth_generator;
     UserGenerator user_generator;
     HandsGenerator hand_generator;
-    SkeletonCapability skeleton;
-    PoseDetectionCapability pose;
+    GestureGenerator gest_generator;
+
+    XnBool needPose;
+    XnChar strPose[20];
+
+    XnPoint3D hand_pos;
 
     void CHECK_RC(XnStatus nRetVal, const char* what);
 };
