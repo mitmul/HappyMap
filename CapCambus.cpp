@@ -251,11 +251,11 @@ void CapCambus::interCambus()
     {
         if(!maskimg.empty())
         {
-            // HSV変換
-            Mat hsv, masked;
-            cvtColor(cambus, hsv, CV_BGR2HSV);
+//            // HSV変換
+//            Mat hsv, masked;
+//            cvtColor(cambus, hsv, CV_BGR2HSV);
 
-            imshow("hsv", hsv);
+//            imshow("hsv", hsv);
 
 //            hsv.copyTo(masked, maskimg);
 
@@ -309,5 +309,22 @@ void CapCambus::calcMask()
     {
         cerr << "CapCambus::calcMask:" << endl
              << e.what() << endl;
+    }
+}
+
+void CapCambus::receiveHSVThreshold(int h, int s, int v)
+{
+    if(!maskimg.empty())
+    {
+        // HSV変換
+        Mat hsv, masked;
+        cvtColor(cambus, hsv, CV_BGR2HSV);
+
+        vector<Mat> hsv_split;
+        split(hsv, hsv_split);
+
+        vector
+
+        imshow("hsv", hsv);
     }
 }
