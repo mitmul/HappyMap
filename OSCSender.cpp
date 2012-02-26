@@ -34,7 +34,6 @@ void OSCSender::send()
 {
     try
     {
-        cout << "send()" << endl;
         string p = lexical_cast<string>(port);
         lo_address t = lo_address_new(host.c_str(), p.c_str());
 

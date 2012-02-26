@@ -25,11 +25,6 @@ void OSCReceiver::listening()
     st = lo_server_thread_new(p, error);
     lo_server_thread_add_method(st, NULL, NULL, _genericHandler, NULL);
     lo_server_thread_start(st);
-
-//    while(1)
-//    {
-//        usleep(1);
-//    }
 }
 
 int OSCReceiver::genericHandler(const char *path, const char *types, lo_arg **argv, int argc, void *data)

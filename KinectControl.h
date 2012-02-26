@@ -17,6 +17,7 @@ class KinectControl
 {
 public:
     KinectControl();
+    ~KinectControl();
 
     void Init();
 
@@ -25,6 +26,8 @@ public:
 
     XnDepthPixel* getDepth();
     std::vector<std::vector<XnPoint3D> > getSkeleton();
+
+    XnPoint3D getRealValue(const XnPoint3D src);
 
     // コールバック関数
     XnCallbackHandle user_callbacks;

@@ -12,18 +12,20 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         MainWindow.cpp \
-    CapCambus.cpp \
     OSCReceiver.cpp \
     OSCSender.cpp \
     KinectControl.cpp \
-    GLWidget.cpp
+    GLWidget.cpp \
+    CapCambus.cpp \
+    SoundDefine.cpp
 
 HEADERS  += MainWindow.h \
-    CapCambus.h \
     OSCReceiver.h \
     OSCSender.h \
     KinectControl.h \
-    GLWidget.h
+    GLWidget.h \
+    CapCambus.h \
+    SoundDefine.h
 
 FORMS    += MainWindow.ui
 

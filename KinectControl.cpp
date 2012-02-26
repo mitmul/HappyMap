@@ -6,6 +6,11 @@ KinectControl::KinectControl()
     Init();
 }
 
+KinectControl::~KinectControl()
+{
+    context.Shutdown();
+}
+
 static void XN_CALLBACK_TYPE _NewUser(UserGenerator &generator, XnUserID nId, void* pCookie)
 {
     ((KinectControl*)pCookie)->NewUser(generator, nId);
@@ -106,7 +111,7 @@ static void XN_CALLBACK_TYPE _HandUpdate(HandsGenerator& generator, XnUserID nId
 
 void KinectControl::HandUpdate(HandsGenerator &generator, XnUserID nId, const XnPoint3D *pPosition, XnFloat fTime)
 {
-    cout << "Hand Update: " << nId << " @ (" << pPosition->X << "," << pPosition->Y << "," << pPosition->Z << ")" << endl;
+//    cout << "Hand Update: " << nId << " @ (" << pPosition->X << "," << pPosition->Y << "," << pPosition->Z << ")" << endl;
 
     hand_pos = *pPosition;
 }
@@ -292,6 +297,14 @@ std::vector<std::vector<XnPoint3D> > KinectControl::getSkeleton()
     }
 
     return skeletons;
+}
+
+XnPoint3D KinectControl::getRealValue(const XnPoint3D src)
+{
+    XnPoint3D real = src;
+    depth_generator.ConvertProjectiveToRealWorld(1, &real, &real);
+
+    return real;
 }
 
 void KinectControl::CHECK_RC(XnStatus nRetVal, const char *what)
